@@ -253,7 +253,10 @@ class Header extends HTMLElement {
     const reportarMascota = document.querySelector(".reportar-mascotas");
     const reportesCerca = document.querySelector(".reportes-cerca");
     reportarMascota.addEventListener("click", () => {
-      Router.go("/reportar-mascota");
+      state.getReportesDeUnUser((cb) => {
+        state.clearPetReported();
+        Router.go("/reportar-mascota");
+      });
     });
     reportesCerca.addEventListener("click", () => {
       Router.go("/perdidas");
@@ -261,7 +264,10 @@ class Header extends HTMLElement {
     const reportarMascota2 = document.querySelector(".reportar-mascotas2");
     const reportesCerca2 = document.querySelector(".reportes-cerca2");
     reportarMascota2.addEventListener("click", () => {
-      Router.go("/reportar-mascota");
+      state.getReportesDeUnUser((cb) => {
+        state.clearPetReported();
+        Router.go("/reportar-mascota");
+      });
     });
     reportesCerca2.addEventListener("click", () => {
       Router.go("/perdidas");

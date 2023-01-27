@@ -9,12 +9,21 @@ const state = {
     userId: "",
     token: "",
     estado: "",
+    meReports: [],
+    editar: {
+      report: 0,
+      newPetName: "",
+      newLocation: "",
+      newPetImage: "",
+      newPetLat: "",
+      newPetLng: "",
+    },
     petReported: {
       location: "",
-      img: "",
-      petLat: "",
-      petLng: "",
-      petname: "",
+      petImage: "",
+      lat: "",
+      lng: "",
+      petName: "",
     },
   },
   listeners: [],
@@ -39,8 +48,24 @@ const state = {
       (data.myLng = ""),
       (data.userId = ""),
       (data.token = ""),
-      // (data.estado = ""),
-      this.setState(data);
+      (data.meReports = []);
+    (data.petReported = {
+      location: "",
+      petImage: "",
+      lat: "",
+      lng: "",
+      petName: "",
+    }),
+      (data.editar = {
+        report: 0,
+        newPetName: "",
+        newLocation: "",
+        newPetImage: "",
+        newPetLat: "",
+        newPetLng: "",
+      });
+    // (data.estado = ""),
+    this.setState(data);
   },
   suscribe(cb: (any) => any) {
     this.listeners.push(cb);
@@ -171,7 +196,7 @@ const state = {
         // (cs.email = data.email), (cs.name = data.name), (cs.userId = data.id);
         // this.setState(cs);
         // console.log(cs);
-        // console.log(data);
+        console.log("data de getusuario2", data);
         cb(data);
       });
   },
@@ -233,15 +258,90 @@ const state = {
         return res.json();
       })
       .then((data) => {
+        cs.petReported.petName = data.petName;
+        cs.petReported.location = data.location;
+        cs.petReported.petImage = data.petImage;
         console.log("data de reportar mascota", data);
+        this.setState(cs);
         cb(data);
       });
   },
+  getReportesDeUnUser(callback) {
+    const cs = this.getState();
+    const tokenBearer = "bearer " + cs.token;
+    fetch(API_BASE_URL + "/me/mis-reportes", {
+      method: "get",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: tokenBearer,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data del getReportes de un user", data);
+        if (data[0]) {
+          cs.meReports = data;
+        }
+
+        this.setState(cs);
+        callback(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  },
+  clearPetReported() {
+    const cs = state.getState();
+    cs.petReported.location = "";
+    cs.petReported.petImage = "";
+    cs.petReported.lat = "";
+    cs.petReported.lng = "";
+    cs.petReported.petName = "";
+    state.setState(cs);
+  },
   setReportLocation(lat, lng) {
     let cs = this.getState();
+    console.log(lat, lng);
     cs.petReported.lat = lat;
     cs.petReported.lng = lng;
     this.setState(cs);
+  },
+  setEditReportLocation(lat, lng) {
+    let cs = this.getState();
+    cs.editar.newPetLat = lat;
+    cs.editar.newPetLng = lng;
+    this.setState(cs);
+  },
+  setNumberReport(id: number, callback) {
+    let cs = this.getState();
+    cs.editar.report = id;
+    this.setState(cs);
+    callback();
+  },
+  editarMascota(datos: any, cb?) {
+    const cs = state.getState();
+    const idUsuario = cs.userId;
+    const tokenBearer = "bearer " + cs.token;
+    console.log("datos en el state editarMascota", datos);
+    fetch(API_BASE_URL + "/reportes/" + cs.editar.report, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: tokenBearer,
+      },
+      body: JSON.stringify(datos),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        // cs.petReported.petName = data.petName;
+        // cs.petReported.location = data.location;
+        // cs.petReported.petImage = data.petImage;
+        console.log("data de editar mascota", data);
+        // this.setState(cs);
+        cb(data);
+      });
   },
 };
 export { state };

@@ -13,4 +13,5 @@ router.setRoutes([
   { path: "/edit-password", component: "edit-password" },
   { path: "/reportar-mascota", component: "reportar-mascota" },
   { path: "/mis-mascotas", component: "mis-mascotas" },
+  { path: "/edit-pet", component: "edit-pet" },
 ]);

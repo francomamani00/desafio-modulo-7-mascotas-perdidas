@@ -15,7 +15,12 @@ import {
 } from "./controllers/users-controller";
 
 import { createPet } from "./controllers/pets-controller";
-import { createReport } from "./controllers/reports-controller";
+import {
+  allReports,
+  actulizarReport,
+  createReport,
+  unReporte,
+} from "./controllers/reports-controller";
 import { User, Pet, Auth, Report } from "./models";
 import * as cors from "cors";
 const app = express();
@@ -81,6 +86,7 @@ app.get("/me", authMiddleware, async (req, res) => {
 app.get("/usuario/:id", authMiddleware, async (req, res) => {
   const id = req.params.id;
   const usuario = await findUser(id);
+  console.log("id y usuarioooo", id, usuario);
   res.json(usuario);
 });
 
@@ -107,7 +113,9 @@ app.get("/users", async (req, res) => {
   res.json(users);
 });
 
+//
 //PETS
+//
 
 app.post("/report-pet", authMiddleware, async (req, res) => {
   try {
@@ -120,6 +128,28 @@ app.post("/report-pet", authMiddleware, async (req, res) => {
     }
   } catch (err) {
     console.log(err);
+  }
+});
+app.get("/reportes/all", async (req, res) => {
+  const data = await allReports();
+  res.json(data);
+});
+
+app.get("/me/mis-reportes", authMiddleware, async (req, res) => {
+  const data = await unReporte(req._user.id);
+  res.json(data);
+});
+
+app.put("/reportes/:id", authMiddleware, async (req, res) => {
+  if (req.body) {
+    console.log("dentro del req.body QUE LLEGA", req.body);
+    console.log("dentro del req.params.id QUE LLEGA", req.params.id);
+
+    const datos = await actulizarReport(req.body, req.params.id, req._user.id);
+    console.log("datosdentro del endpoint", datos);
+    res.json(datos);
+  } else {
+    res.json({ error: "faltan datos" });
   }
 });
 

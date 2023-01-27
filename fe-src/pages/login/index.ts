@@ -41,9 +41,9 @@ customElements.define(
           } else {
             const cs = state.getState();
             cs.email = email;
-            cs.estado =
-              // cs.password = password;
-              cs.token = resul.token;
+            // cs.estado =
+            // cs.password = password;
+            cs.token = resul.token;
             cs.userId = resul.userId;
             state.getUsuario2((cb) => {
               cs.name = cb.name as any;
