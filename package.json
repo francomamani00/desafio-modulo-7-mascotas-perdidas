@@ -24,13 +24,16 @@
     "mapbox": "^1.0.0-beta10",
     "mapbox-gl": "^2.12.0",
     "nodemon": "^2.0.20",
-    "parcel": "^2.0.0-rc.0",
+    "parcel": "2.6.2",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.28.0",
     "typescript": "^4.9.4"
   },
   "devDependencies": {
-    "@parcel/transformer-image": "^2.8.3"
+    "@parcel/transformer-image": "2.0.0-rc.0",
+    "process": "^0.11.10",
+    "querystring-es3": "^0.2.1",
+    "url": "^0.11.0"
   }
 }
