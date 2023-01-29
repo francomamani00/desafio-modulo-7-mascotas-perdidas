@@ -12,6 +12,7 @@
     "build": "npm run build:be && npm run build:fe"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
     "@types/node": "^18.11.18",
     "@vaadin/router": "^1.7.4",
     "algoliasearch": "^4.14.3",

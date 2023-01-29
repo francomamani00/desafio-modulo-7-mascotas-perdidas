@@ -106,6 +106,7 @@ class Header extends HTMLElement {
         display:none
     }
     .header-comp__window-menu {
+        z-index:2;
         padding: 22px 20px 20px 20px;
         display: flex;
         flex-direction: column;
@@ -259,7 +260,9 @@ class Header extends HTMLElement {
       });
     });
     reportesCerca.addEventListener("click", () => {
-      Router.go("/perdidas");
+      state.getReportesCerca((cb) => {
+        Router.go("/perdidas");
+      });
     });
     const reportarMascota2 = document.querySelector(".reportar-mascotas2");
     const reportesCerca2 = document.querySelector(".reportes-cerca2");
@@ -270,7 +273,9 @@ class Header extends HTMLElement {
       });
     });
     reportesCerca2.addEventListener("click", () => {
-      Router.go("/perdidas");
+      state.getReportesCerca((cb) => {
+        Router.go("/perdidas");
+      });
     });
     this.appendChild(style);
   }

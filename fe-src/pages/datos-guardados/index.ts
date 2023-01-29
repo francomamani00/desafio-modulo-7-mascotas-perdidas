@@ -13,6 +13,7 @@ customElements.define(
       } else {
         Router.go("/home-page");
       }
+      this.render();
     }
     addListeners() {}
     render() {
@@ -25,60 +26,18 @@ customElements.define(
         
         `;
 
-      // const button2 = this.querySelector(".login__button");
-      // button2.addEventListener("click", () => {
-      //   //obtener ubicacion actual
-
-      //   Router.go("/home-page");
-      // });
       const style = document.createElement("style");
 
       style.innerHTML = `
-      .section{
+      .container-perfil-actualizado{
+        margin-top:20px;
+        margin-left:30px;
+        margin-right:30px;
         display:flex;
-        flex-direction:column;
         align-items:center;
-        margin-left: 20px;
-        margin-right: 20px;
       }
-      .content__title{
-        font-family:"Odibee Sans", cursive;
-        font-size:48px;
+      .container-perfil-actualizado__title{
         text-align:center;
-        font-weight: bold;
-      }
-      .content__subtitle{
-        font-family:"Odibee Sans", cursive;
-        font-size:24px;
-        text-align:center;
-      }
-      .container-subtitle{
-        text-align:center;
-      }
-      .button {
-        background: black;
-        border: none;
-        color: #fff;
-        cursor: pointer;
-        display: inline-block;
-        font-size: 15px;
-        transition: all 0.3s ease-in-out;
-        border-radius: 25px;
-        margin-top: 10px;
-        letter-spacing: 0.1px;
-        line-height: 1em;
-        padding: 20px 30px;
-        text-transform: uppercase;
-        min-width: 200px;
-      }
-      .button:hover {
-        transform: scale(1.2);
-        transition: 0.3s;
-        cursor: pointer;
-      }
-      .button:disabled{
-        background:#e0e0e0;
-        cursor: progress;
       }
       `;
       this.appendChild(style);

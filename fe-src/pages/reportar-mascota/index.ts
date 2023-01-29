@@ -18,6 +18,9 @@ customElements.define(
       if (cs.token != "") {
         this.render();
       } else {
+        console.log(
+          "necesitas logearte para reportar o ver tus mascotas reportadas"
+        );
         Router.go("/login");
       }
       this.addListeners();
@@ -33,7 +36,7 @@ customElements.define(
           <div class="container">
             <h1 class="content__title">Agregar Mascota</h1>
             <div class="content-report__container">
-              <p class="content__container__desciption">
+              <p class="content__container__description">
                 Ingresa los datos de tu mascota !!!
               </p>
               
@@ -43,12 +46,12 @@ customElements.define(
               
               <input type="text" name="petName" placeholder="nombre de la mascota"/>
               <textarea name="commentary" placeholder="detalles de la mascota"></textarea>
-              <div class="mapa">
+              <div class="conteiner__mapa">
                 <input class="input-busqueda-location" type="text" name="location" placeholder="mi ubicación"/>
-                <div id="map" style="width: 350px; height: 350px"></div>
-                <button class="small__button save-location">Agregar ubicacion</button>
+                <div id="map" style="width: 350px; height: 350px; border-radius: 30px;"></div>
+                <button class="button small__button save-location">Agregar ubicacion</button>
               </div>
-              <button class="guardar">Reportar mascota perdida</button>
+              <button class="button guardar">Reportar mascota perdida</button>
             </div>
           </div>
         </form>
@@ -87,11 +90,12 @@ customElements.define(
           const petImage = pictureFile.dataURL;
           const commentary = e.target["commentary"].value;
           const location = e.target["location"].value;
+          const ownerEmail = cs.email;
           const lat = cs.petReported.lat;
           const lng = cs.petReported.lng;
-          console.log("antes del form");
+
           state.reportarMascota(
-            { petName, petImage, commentary, location, lat, lng },
+            { petName, petImage, commentary, location, lat, lng, ownerEmail },
             (cb) => {
               if (cb) Router.go("/datos-guardados");
             }
@@ -136,7 +140,7 @@ customElements.define(
         const map = initMap();
         initSearchForm(function (results) {
           const firstResult = results[0];
-          console.log(firstResult);
+
           const marker = new mapboxgl.Marker()
             .setLngLat(firstResult.geometry.coordinates)
             .addTo(map);
@@ -152,29 +156,47 @@ customElements.define(
       const style = document.createElement("style");
 
       style.innerHTML = `
-      .section-home-home{
+      .section-home{
         display:flex;
         flex-direction:column;
         align-items:center;
         margin-left: 20px;
         margin-right: 20px;
       }
-      .content__title-home{
+      @media (min-width: 768px) {
+        #map {
+            width:500px;
+          }
+        }
+      .content__title{
         font-family:"Odibee Sans", cursive;
         font-size:48px;
         text-align:center;
         font-weight: bold;
       }
-      .content__subtitle-home{
-        font-family:"Odibee Sans", cursive;
-        font-size:24px;
-        text-align:center;
+      .content__container__description {
+        font-size: 20px;
+        text-align: center;
       }
-      .container-subtitle-home{
-        text-align:center;
+      .content-report__container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 400;
+        gap: 20px;
+        margin-left:20px;
+        margin-right:20px;
+        margin-bottom:20px;
+        margin-top:20px;
       }
-      .button-home{
-        background: black;
+      .conteiner__mapa{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
+      .button{
+        background: red;
         border: none;
         color: #fff;
         cursor: pointer;
@@ -189,7 +211,13 @@ customElements.define(
         text-transform: uppercase;
         min-width: 200px;
       }
-      .button-home:hover {
+      .small__button{
+        margi-top:5px;
+        min-width:170px;
+        font-size:13px;
+        padding:15px 20px;
+      }
+      .button:hover {
         transform: scale(1.2);
         transition: 0.3s;
         cursor: pointer;
@@ -198,21 +226,14 @@ customElements.define(
         background:#e0e0e0;
         cursor: progress;
       }
-      .content-report__container{
-        display:flex;
-        flex-direction:column;
-        gap:15px;
-        text-align:center;
-        justify-content:center;
-        margin-left:20px;
-        margin-right:20px;
-        margin-top:20px;
+      .button-mis-mascotas{
+        background-color:black;
       }
       .mascota__cargar {
         font-size: 14px;
-        color: rgb(124, 124, 124);
+        color: rgb(124, 124, 124, 0.3);
         position: absolute;
-        padding: 120px;
+        padding: 80px;
       }
       .mascota__imagen {
         height: 200px;
@@ -229,7 +250,27 @@ customElements.define(
       .mascota__imagen:hover {
         border-color: #e3e3e3;
         cursor: pointer;
-    }
+      }
+      input{
+        margin-top:15px;
+      }
+      input, textarea {
+        letter-spacing: 0.1px;
+        border: 1px solid #e1e1e1;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-size: 18px;
+        min-width: 300px;
+        transition: all 0.3s ease-in-out;
+      }
+      input:focus, textarea:focus {
+          transition: 0.5s;
+          transform: scale(1.07);
+      }
+      textarea {
+          resize: none;
+          min-width: 320px;
+      }
       `;
       this.appendChild(style);
       // this.addListeners();

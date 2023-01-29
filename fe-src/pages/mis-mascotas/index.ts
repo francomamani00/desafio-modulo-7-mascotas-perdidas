@@ -83,7 +83,7 @@ customElements.define(
       const style = document.createElement("style");
 
       style.innerHTML = `
-      .section{
+      .section-mis-mascotas{
         display:flex;
         flex-direction:column;
         align-items:center;
@@ -127,6 +127,46 @@ customElements.define(
         text-align: center;
         position: static;
         z-index: 1;
+      }
+      .pet__card:hover {
+        transform: translateY(2px);
+        box-shadow: 0 12px 16px rgba(0, 0, 0, 0.2);
+      }
+      .location__card{
+        font-weight: 200;
+        font-size:24px;
+        margin: 5px 0 0 0;
+        font-family: "Odibee Sans", cursive;
+      }
+      .footer__card{
+        display:flex;
+        flex-direction:row;
+        justify-content:space-between;
+        margin: 0 15px;
+        text-align:center;
+        align-items:center;
+      }
+      .title__card{
+        font-weight: 600;
+        font-size:36px;
+
+        font-family: "Odibee Sans", cursive;
+      }
+      .editar{
+        background: none;
+        border: none;
+        background-color:red;
+        color: #fff;
+        border-radius:5px;
+        padding:10px 10px;
+        font-family:"Odibee Sans", cursive;
+        font-size:20px;
+        transition: all 0.3s ease-in-out;
+      }
+      .editar:hover {
+        transform: scale(1.2);
+        transition: 0.3s;
+        cursor: pointer;
       }
       `;
       this.appendChild(style);

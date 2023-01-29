@@ -21,7 +21,7 @@ customElements.define(
         <div class="container-edit-name">
          <h1 class="container-edit-name__title">Editar el nombre:</h1>
          <div class="container-edit-name__content">
-            <input type="text" name="name" placeholder="nombre" required>
+            <input type="text" name="name" placeholder="Nuevo nombre" required>
             <button class="edit-name__button">Actualizar</button>
          </div>
         </div>
@@ -58,14 +58,7 @@ customElements.define(
       const style = document.createElement("style");
 
       style.innerHTML = `
-      .section{
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        margin-left: 20px;
-        margin-right: 20px;
-      }
-      .content__title{
+      .container-edit-name__title{
         font-family:"Odibee Sans", cursive;
         font-size:48px;
         text-align:center;
@@ -79,7 +72,24 @@ customElements.define(
       .container-subtitle{
         text-align:center;
       }
-      .button {
+      .container-edit-name{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 400;
+        gap: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+      .container-edit-name__content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 400;
+        gap: 10px;
+
+      }
+      .edit-name__button {
         background: black;
         border: none;
         color: #fff;
@@ -95,15 +105,29 @@ customElements.define(
         text-transform: uppercase;
         min-width: 200px;
       }
-      .button:hover {
+      .edit-name__button:hover {
         transform: scale(1.2);
         transition: 0.3s;
         cursor: pointer;
       }
-      .button:disabled{
+      .edit-name__button:disabled{
         background:#e0e0e0;
         cursor: progress;
       }
+      input, textarea {
+        letter-spacing: 0.1px;
+        border: 1px solid #e1e1e1;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-size: 18px;
+        min-width: 300px;
+        transition: all 0.3s ease-in-out;
+      }
+      input:focus {
+        transition: 0.5s;
+        transform: scale(1.07);
+      }
+
       `;
       this.appendChild(style);
       // this.addListeners();

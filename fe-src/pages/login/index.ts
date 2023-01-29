@@ -17,7 +17,7 @@ customElements.define(
         <div class="container-login">
          <h1 class="container-login__title">Login</h1>
          <div class="container-login__content">
-            <p class="container-login__description">Ingrese su correo electronico !!!</p>
+            <p class="container-login__description">Ingrese su correo electronico</p>
             <input type="email" name="email" placeholder="correo electronico" required>
             <input type="password" name="password" placeholder="contraseña" required>
             <button class="login__button">ingresar</button>
@@ -28,11 +28,9 @@ customElements.define(
         
         `;
       const form = document.querySelector(".form-login");
-      console.log(state.getState());
       form.addEventListener("submit", (e) => {
         e.preventDefault();
         const button = this.querySelector(".login__button") as any;
-        // button.disabled = true;
         const email = e.target["email"].value;
         const password = e.target["password"].value;
         state.usuarioLogin(email, password, (resul) => {
@@ -54,12 +52,7 @@ customElements.define(
           }
         });
       });
-      // const button2 = this.querySelector(".login__button");
-      // button2.addEventListener("click", () => {
-      //   //obtener ubicacion actual
 
-      //   Router.go("/home-page");
-      // });
       const style = document.createElement("style");
 
       style.innerHTML = `
@@ -70,22 +63,49 @@ customElements.define(
         margin-left: 20px;
         margin-right: 20px;
       }
-      .content__title{
+      .container-login__title{
         font-family:"Odibee Sans", cursive;
         font-size:48px;
         text-align:center;
         font-weight: bold;
       }
-      .content__subtitle{
+      .container-login__description{
         font-family:"Odibee Sans", cursive;
         font-size:24px;
         text-align:center;
       }
-      .container-subtitle{
-        text-align:center;
+      .container-login{
+        display: flex;
+        flex-direction: column;
+        margin-left: 20px;
+        margin-right: 20px;
       }
-      .button {
-        background: black;
+      .container-login__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 400;
+        gap: 20px;
+    }
+      input, textarea {
+        letter-spacing: 0.1px;
+        border: 1px solid #e1e1e1;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-size: 18px;
+        min-width: 300px;
+        transition: all 0.3s ease-in-out;
+      } 
+      input:focus, textarea:focus {
+        transition: 0.5s;
+        transform: scale(1.07);
+      }
+      textarea {
+        resize: none;
+        min-width: 320px;
+      }
+      .login__button {
+        background: red;
         border: none;
         color: #fff;
         cursor: pointer;
@@ -100,12 +120,12 @@ customElements.define(
         text-transform: uppercase;
         min-width: 200px;
       }
-      .button:hover {
+      .login__button:hover {
         transform: scale(1.2);
         transition: 0.3s;
         cursor: pointer;
       }
-      .button:disabled{
+      .login__button:disabled{
         background:#e0e0e0;
         cursor: progress;
       }

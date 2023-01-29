@@ -20,9 +20,12 @@ import {
   actulizarReport,
   createReport,
   unReporte,
+  deletePet,
+  reportesCerca,
 } from "./controllers/reports-controller";
 import { User, Pet, Auth, Report } from "./models";
 import * as cors from "cors";
+import { enviarEmail } from "./lib/sendgrid";
 const app = express();
 app.use(cors());
 const port = process.env.PORT || 3005;
@@ -142,17 +145,34 @@ app.get("/me/mis-reportes", authMiddleware, async (req, res) => {
 
 app.put("/reportes/:id", authMiddleware, async (req, res) => {
   if (req.body) {
-    console.log("dentro del req.body QUE LLEGA", req.body);
-    console.log("dentro del req.params.id QUE LLEGA", req.params.id);
-
     const datos = await actulizarReport(req.body, req.params.id, req._user.id);
-    console.log("datosdentro del endpoint", datos);
     res.json(datos);
   } else {
     res.json({ error: "faltan datos" });
   }
 });
-
+app.delete("/delete-report/:id", authMiddleware, async (req, res) => {
+  console.log(req.params.id);
+  if (req.body) {
+    const respuesta = await deletePet(req.params.id);
+    res.json(respuesta);
+  } else {
+    res.json({ error: "faltan datos" });
+  }
+});
+app.get("/reportes-cerca-de", async (req, res) => {
+  if ((req.query.myLng, req.query.myLat)) {
+    const cerca = await reportesCerca(req.query.myLat, req.query.myLng);
+    res.json(cerca);
+  } else {
+    res.json({ error: "falta tu ubicacion" });
+  }
+});
+app.post("/send-email", async (req, res) => {
+  const { msg } = req.body;
+  const viLaMascota = await enviarEmail(msg);
+  res.json({ viLaMascota });
+});
 app.listen(port, () => {
   console.log("corriendo en", port);
 });

@@ -9,6 +9,10 @@ body {
   margin: 0;
   color: var(--color-principal);
 }
+.dz-image img {
+  height: 197px;
+  width: 197px;
+}
 /* #root {
   height: 100vh;
 } */

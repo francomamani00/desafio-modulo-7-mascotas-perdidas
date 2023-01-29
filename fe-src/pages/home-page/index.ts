@@ -38,7 +38,9 @@ customElements.define(
           const lng = e.coords.longitude as any;
 
           state.setLoc(lat, lng, () => {
-            Router.go("/perdidas");
+            state.getReportesCerca((cb) => {
+              Router.go("/perdidas");
+            });
           });
         });
       });

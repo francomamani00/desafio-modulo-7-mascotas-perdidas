@@ -14,4 +14,5 @@ router.setRoutes([
   { path: "/reportar-mascota", component: "reportar-mascota" },
   { path: "/mis-mascotas", component: "mis-mascotas" },
   { path: "/edit-pet", component: "edit-pet" },
+  { path: "/send-email", component: "send-email" },
 ]);

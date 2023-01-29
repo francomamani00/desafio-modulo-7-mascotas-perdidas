@@ -11,3 +11,4 @@ import "./pages/edit-password";
 import "./pages/reportar-mascota";
 import "./pages/mis-mascotas";
 import "./pages/edit-pet";
+import "./pages/send-email"

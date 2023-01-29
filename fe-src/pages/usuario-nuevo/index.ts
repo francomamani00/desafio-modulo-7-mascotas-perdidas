@@ -69,29 +69,33 @@ customElements.define(
       const style = document.createElement("style");
 
       style.innerHTML = `
-      .section{
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        margin-left: 20px;
-        margin-right: 20px;
-      }
-      .content__title{
+
+      .container-signup__title{
         font-family:"Odibee Sans", cursive;
         font-size:48px;
         text-align:center;
         font-weight: bold;
       }
-      .content__subtitle{
+      .container-signup__description{
         font-family:"Odibee Sans", cursive;
         font-size:24px;
         text-align:center;
       }
-      .container-subtitle{
-        text-align:center;
+      .container-signup{
+        display: flex;
+        flex-direction: column;
+        margin-left: 20px;
+        margin-right: 20px;
       }
-      .button {
-        background: black;
+      .container-signup__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 400;
+        gap: 20px;
+    }
+      .signup__button {
+        background: red;
         border: none;
         color: #fff;
         cursor: pointer;
@@ -106,15 +110,32 @@ customElements.define(
         text-transform: uppercase;
         min-width: 200px;
       }
-      .button:hover {
+      .signup__button:hover {
         transform: scale(1.2);
         transition: 0.3s;
         cursor: pointer;
       }
-      .button:disabled{
+      .signup__button:disabled{
         background:#e0e0e0;
         cursor: progress;
       }
+      input, textarea {
+        letter-spacing: 0.1px;
+        border: 1px solid #e1e1e1;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-size: 18px;
+        min-width: 300px;
+        transition: all 0.3s ease-in-out;
+    }
+    input:focus, textarea:focus {
+        transition: 0.5s;
+        transform: scale(1.07);
+    }
+    textarea {
+        resize: none;
+        min-width: 320px;
+    }
       `;
       this.appendChild(style);
       // this.addListeners();

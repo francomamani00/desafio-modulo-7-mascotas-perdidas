@@ -16,7 +16,7 @@ export async function createReport(userId, data) {
       petName: data.petName,
       petImage: imagen.secure_url,
       location: data.location,
-
+      ownerEmail: data.ownerEmail,
       lat: data.lat,
       lng: data.lng,
       commentary: data.commentary,
@@ -29,6 +29,8 @@ export async function createReport(userId, data) {
         petName: data.petName,
         petImage: imagen.secure_url,
         location: data.location,
+        ownerEmail: data.ownerEmail,
+        creado: "si",
         _geoloc: {
           lat: data.lat,
           lng: data.lng,
@@ -61,12 +63,6 @@ export async function unReporte(number: number) {
 }
 
 export async function actulizarReport(data, id, userId: number) {
-  //id: id del pet
-  //userId : id del dueño
-  // console.log("entre a actualizarReport DATA", data);
-  // console.log("entre a actualizarReport id, petId", id);
-  // console.log("entre a actualizarReport userId", userId);
-
   const objetoDeData = data;
 
   let object: any = {};
@@ -79,18 +75,9 @@ export async function actulizarReport(data, id, userId: number) {
       discard_original_filename: true,
       width: 1000,
     });
-    // console.log("data dentro del datanewpetimage", data);
+
     object.petImage = imagen.secure_url;
     objectToAlgolia.petImage = imagen.secure_url;
-    // console.log("data.commentary", Object.values(data)[3]);
-    // object.commentary = data["commentary"];
-    // object.location = data.location;
-    // objectToAlgolia.location = data.location;
-    // object.lat = data.lat;
-    // object.lng = data.lng;
-    // objectToAlgolia._geoloc = { lat: data.lat, lng: data.lng };
-    // object.petName = data.petName;
-    // objectToAlgolia.petName = data.petName;
   }
   if (data.newCommentary) {
     object.commentary = array[3];
@@ -129,29 +116,32 @@ export async function actulizarReport(data, id, userId: number) {
     });
 
   return updatedReport;
+}
+export async function deletePet(idReport: number) {
+  const objectID = `${idReport}`;
 
-  // // index
-  // //   .partialUpdateObject(data.indexItem)
-  // //   .then((object) => {
-  // //     console.log("okay");
-  // //   })
-  // //   .catch((e) => {
-  // //     console.log("salio mal");
-  // //   });
-  // // // // const [result, error] = await getResult(dataActualiza);
-  // // // if (error) {
-  // // //   console.log(error);
-  // // // }
-  // // // return [result, error];
+  try {
+    const mascotFound = await Report.findByPk(idReport);
+    await mascotFound.destroy();
+    await index.deleteObject(objectID);
 
-  // // const indexItem = bodyparse(dataMasEmail, id);
+    return true;
+  } catch (e) {
+    console.error(e, "algo salio mal");
+  }
+}
+export async function reportesCerca(myLat, myLng) {
+  const { hits } = await index
+    .search("", {
+      aroundLatLng: [myLat, myLng].join(","),
+      aroundRadius: 20000,
+    })
+    .catch((error) => {
+      console.log(error);
 
-  // // index
-  // //   .partialUpdateObject(indexItem)
-  // //   .then((object) => {
-  // //     console.log("okay");
-  // //   })
-  // //   .catch((e) => {
-  // //     console.log("salio mal");
-  // //   });
+      return error;
+    });
+  if (hits) {
+    return hits;
+  }
 }

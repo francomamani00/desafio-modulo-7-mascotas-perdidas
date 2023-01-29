@@ -34,7 +34,7 @@ customElements.define(
           <div class="container">
             <h1 class="content__title">Editar Mascota</h1>
             <div class="content-report__container">
-              <p class="content__container__desciption">
+              <p class="content__container__description">
                 Ingresa los datos de tu mascota !!!
               </p>
               
@@ -44,16 +44,16 @@ customElements.define(
               
               <input type="text" name="petName" placeholder="Ingresa el nuevo nombre"/>
               <textarea name="commentary" placeholder="detalles de la mascota"></textarea>
-              <div class="mapa">
+              <div class="conteiner__mapa">
                 <input class="input-busqueda-location" type="text" name="location" placeholder="mi ubicación"/>
                 <div id="map" style="width: 350px; height: 350px"></div>
-                <button class="small__button save-location">Agregar ubicacion</button>
+                <button class="button small__button save-location">Agregar ubicacion</button>
               </div>
-              <button class="guardar">Reportar mascota perdida</button>
+              <button class="button guardar">Editar Mascota</button>
             </div>
           </div>
         </form>
-        <button class="delete">Eliminar Mascota</button>
+        <button class="button delete">Eliminar Mascota</button>
       </section>
 
         
@@ -90,7 +90,7 @@ customElements.define(
         });
       }
       const pet = report();
-      console.log("estoy editando este pet", pet);
+
       formEl.addEventListener("submit", (e) => {
         e.preventDefault();
         const newPetName = e.target["petName"].value;
@@ -150,7 +150,6 @@ customElements.define(
         const map = initMap();
         initSearchForm(function (results) {
           const firstResult = results[0];
-          console.log(firstResult);
           const marker = new mapboxgl.Marker()
             .setLngLat(firstResult.geometry.coordinates)
             .addTo(map);
@@ -160,39 +159,44 @@ customElements.define(
             firstResult.geometry.coordinates[1],
             firstResult.geometry.coordinates[0]
           );
-          console.log(
-            firstResult.geometry.coordinates[1],
-            firstResult.geometry.coordinates[0]
-          );
         });
       })();
-
+      const deleteButton = document.querySelector(".delete");
+      deleteButton.addEventListener("click", () => {
+        console.log("eliminando", pet);
+        state.deleteReport(() => {
+          Router.go("/datos-guardados");
+        });
+      });
       const style = document.createElement("style");
 
       style.innerHTML = `
-      .section-home-home{
+      .section-home{
         display:flex;
         flex-direction:column;
         align-items:center;
         margin-left: 20px;
         margin-right: 20px;
       }
-      .content__title-home{
+      .content__title{
         font-family:"Odibee Sans", cursive;
         font-size:48px;
         text-align:center;
         font-weight: bold;
       }
-      .content__subtitle-home{
-        font-family:"Odibee Sans", cursive;
-        font-size:24px;
-        text-align:center;
+
+      .content__container__description{
+        font-size: 20px;
+        text-align: center;
       }
-      .container-subtitle-home{
-        text-align:center;
+      .conteiner__mapa{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
       }
-      .button-home{
-        background: black;
+      .button{
+        background: red;
         border: none;
         color: #fff;
         cursor: pointer;
@@ -205,9 +209,13 @@ customElements.define(
         line-height: 1em;
         padding: 20px 30px;
         text-transform: uppercase;
-        min-width: 200px;
+        min-width: 250px;
+        max-width:350px;
       }
-      .button-home:hover {
+      .guardar{
+        padding:20px 30px;
+      }
+      .button:hover {
         transform: scale(1.2);
         transition: 0.3s;
         cursor: pointer;
@@ -215,6 +223,16 @@ customElements.define(
       .button:disabled{
         background:#e0e0e0;
         cursor: progress;
+      }
+      .small__button{
+        margi-top:5px;
+        min-width:170px;
+        font-size:13px;
+        padding:15px 20px;
+      }
+      .delete{
+        margin-top:20px;
+        background-color:black
       }
       .content-report__container{
         display:flex;
@@ -225,12 +243,13 @@ customElements.define(
         margin-left:20px;
         margin-right:20px;
         margin-top:20px;
+        align-items:center;
       }
       .mascota__cargar {
         font-size: 14px;
-        color: rgb(124, 124, 124);
+        color: rgb(124, 124, 124, 0.3);
         position: absolute;
-        padding: 120px;
+        padding: 80px;
       }
       .mascota__imagen {
         height: 200px;
@@ -243,11 +262,32 @@ customElements.define(
         display:flex;
         text-align:center;
         justify-content:center;
+        align-items:center;
       }
       .mascota__imagen:hover {
         border-color: #e3e3e3;
         cursor: pointer;
-    }
+      }
+      input{
+        margin-top:15px;
+      }
+      input, textarea {
+        letter-spacing: 0.1px;
+        border: 1px solid #e1e1e1;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-size: 18px;
+        min-width: 300px;
+        transition: all 0.3s ease-in-out;
+      }
+      input:focus, textarea:focus {
+          transition: 0.5s;
+          transform: scale(1.07);
+      }
+      textarea {
+          resize: none;
+          min-width: 320px;
+      }
       `;
       this.appendChild(style);
       // this.addListeners();

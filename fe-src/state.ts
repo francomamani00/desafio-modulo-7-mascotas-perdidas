@@ -1,5 +1,12 @@
 const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3005";
 type Estado = "online" | "offline";
+type msg = {
+  to: any;
+  from: string;
+  subject: string;
+  text: string;
+  html: string;
+};
 const state = {
   data: {
     email: "",
@@ -24,6 +31,14 @@ const state = {
       lat: "",
       lng: "",
       petName: "",
+      ownerEmail: "",
+    },
+
+    emailAEnviar: {
+      nombreDelReportador: "",
+      telefono: "",
+      bio: "",
+      emailEnviado: false,
     },
   },
   listeners: [],
@@ -132,7 +147,6 @@ const state = {
         return res.json();
       })
       .then((datos) => {
-        console.log("datos del Auth", datos);
         cb(datos);
       });
   },
@@ -173,7 +187,6 @@ const state = {
         console.log("datadeluser", data.user);
         // (cs.email = data.email), (cs.name = data.name), (cs.userId = data.id);
         // this.setState(cs);
-        console.log(cs);
         cb(data);
       });
   },
@@ -196,7 +209,7 @@ const state = {
         // (cs.email = data.email), (cs.name = data.name), (cs.userId = data.id);
         // this.setState(cs);
         // console.log(cs);
-        console.log("data de getusuario2", data);
+
         cb(data);
       });
   },
@@ -217,7 +230,6 @@ const state = {
         return res.json();
       })
       .then((data) => {
-        console.log("data de actualizarname", data);
         cb(data);
       });
   },
@@ -237,7 +249,6 @@ const state = {
         return res.json();
       })
       .then((data) => {
-        console.log("data de actualizarpassword", data);
         cb(data);
       });
   },
@@ -245,7 +256,6 @@ const state = {
     const cs = state.getState();
     const idUsuario = cs.userId;
     const tokenBearer = "bearer " + cs.token;
-    console.log("datos en el state reportarMascota", datos);
     fetch(API_BASE_URL + "/report-pet", {
       method: "POST",
       headers: {
@@ -261,7 +271,7 @@ const state = {
         cs.petReported.petName = data.petName;
         cs.petReported.location = data.location;
         cs.petReported.petImage = data.petImage;
-        console.log("data de reportar mascota", data);
+        cs.petReported.ownerEmail = data.ownerEmail;
         this.setState(cs);
         cb(data);
       });
@@ -297,6 +307,7 @@ const state = {
     cs.petReported.lat = "";
     cs.petReported.lng = "";
     cs.petReported.petName = "";
+    cs.petReported.ownerEmail = "";
     state.setState(cs);
   },
   setReportLocation(lat, lng) {
@@ -322,7 +333,6 @@ const state = {
     const cs = state.getState();
     const idUsuario = cs.userId;
     const tokenBearer = "bearer " + cs.token;
-    console.log("datos en el state editarMascota", datos);
     fetch(API_BASE_URL + "/reportes/" + cs.editar.report, {
       method: "PUT",
       headers: {
@@ -338,8 +348,79 @@ const state = {
         // cs.petReported.petName = data.petName;
         // cs.petReported.location = data.location;
         // cs.petReported.petImage = data.petImage;
-        console.log("data de editar mascota", data);
+
         // this.setState(cs);
+        cb(data);
+      });
+  },
+  deleteReport(cb?) {
+    const cs = state.getState();
+    const tokenBearer = "bearer " + cs.token;
+    fetch(API_BASE_URL + "/delete-report/" + cs.editar.report, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: tokenBearer,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        cb(data);
+      });
+  },
+  getReportesCerca(cb?) {
+    const cs = this.getState();
+
+    fetch(
+      API_BASE_URL + `/reportes-cerca-de?myLat=${cs.myLat}&myLng=${cs.myLng}`,
+      {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((e) => {
+        if (e) {
+          cs.cercaMio = e;
+          this.setState(cs);
+          cb(e);
+        }
+      })
+      .catch((error) => {
+        console.error("falta tu ubicacion");
+      });
+  },
+  setNumberEmailAEnviar(id: number, callback) {
+    let cs = this.getState();
+    cs.emailAEnviar.objectID = id;
+    this.setState(cs);
+    callback();
+  },
+  setemailAEnviar(datos: any, cb?) {
+    let cs = this.getState();
+    cs.emailAEnviar.nombreDelReportador = datos.nombreDelReportador;
+    cs.emailAEnviar.telefono = datos.telefono;
+    cs.emailAEnviar.bio = datos.bio;
+    this.setState(cs);
+    cb();
+  },
+  sendEmail(mensaje: msg, cb?) {
+    const cs = state.getState();
+    fetch(API_BASE_URL + "/send-email", {
+      method: "post",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ msg: mensaje }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
         cb(data);
       });
   },

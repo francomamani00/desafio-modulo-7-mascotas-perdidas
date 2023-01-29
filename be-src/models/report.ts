@@ -11,6 +11,7 @@ Report.init(
     lng: DataTypes.FLOAT,
     commentary: DataTypes.STRING,
     user_id: DataTypes.INTEGER,
+    ownerEmail: DataTypes.STRING,
   },
   { sequelize, modelName: "report" }
 );
