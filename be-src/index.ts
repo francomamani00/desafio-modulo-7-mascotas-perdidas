@@ -174,12 +174,8 @@ app.post("/send-email", async (req, res) => {
   const viLaMascota = await enviarEmail(msg);
   res.json({ viLaMascota });
 });
-let rutaRelativa;
-if (env == "development") {
-  rutaRelativa = path.resolve(__dirname, "../dist");
-} else if (env == "production") {
-  rutaRelativa = path.resolve(__dirname, "../../../dist");
-}
+const rutaRelativa = path.resolve(__dirname, "../../../dist");
+
 app.use(express.static(rutaRelativa));
 app.get("*", (req, res) => {
   res.sendFile(rutaRelativa + "/index.html");
