@@ -173,7 +173,7 @@ app.post("/send-email", async (req, res) => {
   const viLaMascota = await enviarEmail(msg);
   res.json({ viLaMascota });
 });
-const rutaRelativa = path.resolve(__dirname, "../fe-src");
+const rutaRelativa = path.resolve(__dirname, "../../dist");
 
 app.use(express.static(rutaRelativa));
 app.get("*", (req, res) => {
