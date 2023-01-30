@@ -30,6 +30,7 @@ const app = express();
 app.use(cors());
 const port = process.env.PORT || 3005;
 const SECRET = process.env.SECRET;
+const env = process.env.NODE_ENV;
 
 app.use(express.json({ limit: "50mb" }));
 app.get("/test", async (req, res) => {
@@ -173,8 +174,12 @@ app.post("/send-email", async (req, res) => {
   const viLaMascota = await enviarEmail(msg);
   res.json({ viLaMascota });
 });
-const rutaRelativa = path.resolve(__dirname, "../../dist");
-
+let rutaRelativa;
+if (env == "development") {
+  rutaRelativa = path.resolve(__dirname, "../dist");
+} else if (env == "production") {
+  rutaRelativa = path.resolve(__dirname, "../../../dist");
+}
 app.use(express.static(rutaRelativa));
 app.get("*", (req, res) => {
   res.sendFile(rutaRelativa + "/index.html");
