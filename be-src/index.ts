@@ -185,6 +185,7 @@ app.get("*", (req, res) => {
   res.sendFile(rutaRelativa + "/index.html");
 });
 app.listen(port, () => {
+  console.log(__dirname);
   console.log(rutaRelativa);
   console.log("corriendo en", port);
 });
