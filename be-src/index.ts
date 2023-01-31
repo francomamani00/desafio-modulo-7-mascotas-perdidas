@@ -13,7 +13,6 @@ import {
   updatePassword,
   updateName,
 } from "./controllers/users-controller";
-
 import { createPet } from "./controllers/pets-controller";
 import {
   allReports,
@@ -31,6 +30,7 @@ app.use(cors());
 const port = process.env.PORT || 3005;
 const SECRET = process.env.SECRET;
 const env = process.env.NODE_ENV;
+const MAPBOX_API_KEY = process.env.MAPBOX_API_KEY;
 
 app.use(express.json({ limit: "50mb" }));
 app.get("/test", async (req, res) => {
@@ -179,10 +179,12 @@ const rutaRelativa1 = path.resolve(__dirname, "../../../dist");
 const rutaRelativa2 = path.resolve(__dirname, "../dist");
 app.use(express.static(rutaRelativa2));
 app.get("*", (req, res) => {
-  res.sendFile(rutaRelativa1 + "/index.html");
+  res.sendFile(rutaRelativa2 + "/index.html");
 });
 app.listen(port, () => {
   console.log(__dirname);
+  console.log("mapboxapikey", MAPBOX_API_KEY);
+  console.log("env", env);
 
   console.log("ruta1", rutaRelativa1);
   console.log("ruta2", rutaRelativa2);
